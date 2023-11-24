@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ConversorFinal_BE.Entities
+namespace ConversorFinalBk.Entities
 {
     public class Subscription
     {
@@ -15,6 +15,6 @@ namespace ConversorFinal_BE.Entities
 
         public int MaxAttemps { get; set; }
 
-        public IEnumerable<User> users { get; set;}
+        public IEnumerable<User> users { get; set; }
     }
 }

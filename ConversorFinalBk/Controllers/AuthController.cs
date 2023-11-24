@@ -1,5 +1,5 @@
 ﻿using ConversorFinalBk.Models;
-using ConversorFinalBk.Repository;
+using ConversorFinalBk.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -13,12 +13,12 @@ namespace ConversorFinalBk.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserRepository _userRepository;
+        private readonly UserService _userService;
         private readonly IConfiguration _config;
 
-        public AuthController(UserRepository userRepository, IConfiguration config)
+        public AuthController(UserService userService, IConfiguration config)
         {
-            _userRepository = userRepository;
+            _userService = userService;
             _config = config;
         }
         [HttpPost]
@@ -26,7 +26,7 @@ namespace ConversorFinalBk.Controllers
         public ActionResult<string> Auth(AuthDto authDto)
         {
             // Verificamos credenciales
-            var user = _userRepository.Validate(authDto.UserName, authDto.Password);
+            var user = _userService.Validate(authDto.UserName, authDto.Password);
 
             if (user is null)
             {

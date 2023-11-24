@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ConversorFinal_BE.Entities
+namespace ConversorFinalBk.Entities
 {
     public class User
     {
@@ -17,7 +17,11 @@ namespace ConversorFinal_BE.Entities
 
         public int IdSubscription { get; set; }
 
-        public IEnumerable<Conversion> conversions { get; set; }
+        public IEnumerable<ConversionHistory> ConversionHistory { get; set; }
 
+        public User()
+        {
+            ConversionHistory = new List<ConversionHistory>();
+        }
     }
 }

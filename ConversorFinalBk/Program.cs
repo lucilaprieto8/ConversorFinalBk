@@ -1,4 +1,5 @@
 using ConversorFinal_BE.Data;
+using ConversorFinalBk.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -39,6 +40,7 @@ namespace ConversorFinalBk
                             }, new List<string>() }
                 });
             });
+            builder.Services.AddScoped<UserService>();
             builder.Services.AddDbContext<ConversorContext>(dbContextOptions => dbContextOptions.UseSqlite(
             builder.Configuration["ConnectionStrings:ConversorDBConnectionString"]));
             builder.Services

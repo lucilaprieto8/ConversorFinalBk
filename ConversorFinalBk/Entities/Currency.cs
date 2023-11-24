@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ConversorFinal_BE.Entities
+namespace ConversorFinalBk.Entities
 {
     public class Currency
     {

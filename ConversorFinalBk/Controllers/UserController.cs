@@ -1,6 +1,7 @@
 ﻿using ConversorFinal_BE.Data;
-using ConversorFinal_BE.Entities;
+using ConversorFinalBk.Entities;
 using ConversorFinalBk.Models;
+using ConversorFinalBk.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,33 +10,20 @@ namespace ConversorFinalBk.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
-   
     public class UserController : ControllerBase
-
-        
     {
-        private readonly ConversorContext _conversorContext;
+        private readonly UserService _userService;
 
-        public UserController(ConversorContext conversorContext)
+        public UserController(UserService userService)
         {
-            conversorContext = _conversorContext;
+            _userService = userService;
         }
 
         [HttpPost]
         public IActionResult CreateUser([FromBody]UserForCreationDto userForCreation)
         {
-            User user = new User()
-            {
-                Id = 1,
-                UserName = userForCreation.UserName,
-                Password = userForCreation.Password,
-                IdSubscription = userForCreation.IdSubscription,
-                conversions = 1
-            };
-            _conversorContext.Add(user);
-            _conversorContext.SaveChanges();
-            return Ok();
+            _userService.CreateUser(userForCreation);
+            return Created("Created", userForCreation);
         }
     }
 }
