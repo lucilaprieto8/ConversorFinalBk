@@ -9,6 +9,7 @@ namespace ConversorFinalBk.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Required]
         public string Leyend { get; set; }
 
         public string Symbol { get; set; }

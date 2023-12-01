@@ -41,6 +41,7 @@ namespace ConversorFinalBk
                 });
             });
             builder.Services.AddScoped<UserService>();
+            builder.Services.AddScoped <CurrencyService>();
             builder.Services.AddDbContext<ConversorContext>(dbContextOptions => dbContextOptions.UseSqlite(
             builder.Configuration["ConnectionStrings:ConversorDBConnectionString"]));
             builder.Services
