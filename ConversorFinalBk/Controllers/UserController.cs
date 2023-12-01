@@ -22,7 +22,14 @@ namespace ConversorFinalBk.Controllers
         [HttpPost]
         public IActionResult CreateUser([FromBody]UserForCreationDto userForCreation)
         {
+            try 
+            { 
             _userService.CreateUser(userForCreation);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
             return Created("Created", userForCreation);
         }
     }
