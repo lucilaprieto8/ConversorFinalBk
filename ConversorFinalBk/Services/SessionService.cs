@@ -17,7 +17,6 @@ namespace ConversorFinalBk.Services
             if (userIdClaim == null)
             {
                 throw new Exception("No se pudo iniciar sesión");
-
             }
             else
                 return int.Parse(userIdClaim.Value);

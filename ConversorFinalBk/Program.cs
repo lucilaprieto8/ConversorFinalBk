@@ -1,4 +1,6 @@
 using ConversorFinal_BE.Data;
+using ConversorFinalBk.Data.Interfaces;
+using ConversorFinalBk.Repository;
 using ConversorFinalBk.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -41,9 +43,12 @@ namespace ConversorFinalBk
                 });
             });
             builder.Services.AddScoped<UserService>();
-            builder.Services.AddScoped <CurrencyService>();
+            builder.Services.AddScoped<CurrencyService>();
             builder.Services.AddScoped<SessionService>();
-            builder.Services.AddDbContext<ConversorContext>(dbContextOptions => dbContextOptions.UseSqlite(
+            builder.Services.AddScoped<ConversionService>();
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(GeneralRepository<>));
+            builder.Services.AddDbContext<ConversorContext>(dbContextOptions => 
+            dbContextOptions.UseSqlite(
             builder.Configuration["ConnectionStrings:ConversorDBConnectionString"]));
             builder.Services
             .AddHttpContextAccessor()

@@ -4,6 +4,7 @@ using ConversorFinalBk.Entities;
 using ConversorFinalBk.Models;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace ConversorFinalBk.Services
 {
     public class CurrencyService
@@ -16,29 +17,30 @@ namespace ConversorFinalBk.Services
             _currencyRepository = Currencyrepository;
             _sessionService = sessionService;
         }
-
-        public bool CreateCurrency(Currency CurrencyToCreate)
+        public bool CreateCurrency(Currency currencyToCreate)
         {
-            return _currencyRepository.Insert(CurrencyToCreate);
+            return _currencyRepository.Insert(currencyToCreate);
         }
-        
 
-        public bool UpdateCurrency(Currency CurrencyToUpdate, int Id)
+
+        public bool UpdateCurrency(Currency currencyToUpdate)
         {
-            if (!CheckIfCurrencyExists(CurrencyToUpdate.Id))
-            {
+            if (!CheckIfCurrencyExists(currencyToUpdate.Id))
                 throw new Exception("No existe la moneda");
-            }
-            return _currencyRepository.Update(CurrencyToUpdate);
-        }
-        public bool CheckIfCurrencyExists(int Id)
-        {
-            return _currencyRepository.Exist(Id);
+            return _currencyRepository.Update(currencyToUpdate);
         }
 
-        public bool DeleteCurrency(int Id)
+
+        public bool CheckIfCurrencyExists(int currencyId)
         {
-            return _currencyRepository.Delete(Id);
+            return _currencyRepository.Exist(currencyId);
+        }
+
+        public bool DeleteCurrency(int deleteId)
+        {
+            if (!CheckIfCurrencyExists(deleteId))
+                throw new Exception("No existe la moneda");
+            return _currencyRepository.Delete(deleteId);
         }
 
         public List <Currency> GetAll()
@@ -46,9 +48,11 @@ namespace ConversorFinalBk.Services
             return _currencyRepository.GetAll().ToList();
         }
 
-        public Currency GetOneById(int Id)
+        public Currency GetOneById(int getId)
         {
-            return _currencyRepository.GetById(Id);
+            if (!CheckIfCurrencyExists(getId))
+                throw new Exception("No existe la moneda");
+            return _currencyRepository.GetById(getId);
         }
     }
 }

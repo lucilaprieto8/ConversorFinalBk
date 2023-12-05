@@ -12,6 +12,7 @@ namespace ConversorFinal_BE.Data
         public DbSet<Currency> Currency { get; set; }
         public DbSet<ConversionHistory> ConversionHistory { get; set; }
        public ConversorContext(DbContextOptions<ConversorContext> options) : base(options){
+
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

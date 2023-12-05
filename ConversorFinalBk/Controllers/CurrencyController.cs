@@ -1,4 +1,5 @@
-﻿using ConversorFinalBk.Entities;
+﻿using ConversorFinalBk.Data.Interfaces;
+using ConversorFinalBk.Entities;
 using ConversorFinalBk.Models;
 using ConversorFinalBk.Services;
 using Microsoft.AspNetCore.Http;
@@ -12,61 +13,65 @@ namespace ConversorFinalBk.Controllers
     public class CurrencyController : ControllerBase
     {
         private readonly CurrencyService _currencyService;
-
-        public CurrencyController(CurrencyService currencyService)
+        private readonly IRepository<Currency> _repository;
+        private readonly SessionService _sessionService;
+        public CurrencyController(CurrencyService currencyService, IRepository<Currency> repository, SessionService sessionService)
         {
             _currencyService = currencyService;
+            _repository = repository;
+            _sessionService = sessionService;
         }
 
 
         [HttpPost]
 
-        public IActionResult CreateCurrency([FromBody] CurrencyForCreationDto currencyForCreation)
+        public IActionResult CreateCurrency(CurrencyToCreate currencytocreate)
         {
+            Currency currency = new Currency()
+            {
+                Leyend = currencytocreate.Leyend,
+                IC = currencytocreate.IC,
+                Symbol = currencytocreate.Symbol
+            };
             try
             {
-                _currencyService.CreateCurrency(currencyForCreation);
+                _currencyService.CreateCurrency(currency);
+                return NoContent();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
-            return Created("Created", currencyForCreation);
         }
 
-        [HttpPut("{Id}")]
+        [HttpPut]
 
-        public IActionResult UpdateCurrency(CurrencyForCreationDto currencyForCreation, int Id)
+        public IActionResult UpdateCurrency([FromBody]Currency currency)
         {
-           if (!_currencyService.CheckIfCurrencyExists(Id))
-            {
-                return NotFound();
-            }
             try
             {
-                _currencyService.UpdateCurrency(currencyForCreation, Id);
-
+                _currencyService.UpdateCurrency(currency);
+                return NoContent();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
-            return Ok(currencyForCreation);
         }
 
         [HttpDelete]
-        public IActionResult DeleteCurrency(int Id)
+        public IActionResult DeleteCurrency([FromQuery]int Id)
         {
             try
             {
                 _currencyService.DeleteCurrency(Id);
+                return NoContent();
             }
 
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
-            return Ok();
         }
 
         [HttpGet]
@@ -77,14 +82,17 @@ namespace ConversorFinalBk.Controllers
 
         [HttpGet]
         [Route("CurrencyId")]
-        public IActionResult getOneById(int id)
+        public IActionResult getOneById(int getoneid)
         {
-            if (!_currencyService.CheckIfCurrencyExists(id))
+            try
             {
-                return NotFound();
+                Currency currency = _currencyService.GetOneById(getoneid);
+                    return Ok(currency);
             }
-            else
-                return Ok(_currencyService.GetOneById(id));
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
