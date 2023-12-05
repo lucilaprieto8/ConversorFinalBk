@@ -8,7 +8,6 @@ namespace ConversorFinalBk.Services
     public class UserService
     {
         private readonly ConversorContext _conversorContext;
-
         public UserService(ConversorContext conversorContext)
         {
             _conversorContext = conversorContext;

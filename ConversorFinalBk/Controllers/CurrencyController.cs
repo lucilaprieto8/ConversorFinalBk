@@ -18,6 +18,7 @@ namespace ConversorFinalBk.Controllers
             _currencyService = currencyService;
         }
 
+
         [HttpPost]
 
         public IActionResult CreateCurrency([FromBody] CurrencyForCreationDto currencyForCreation)
@@ -69,10 +70,21 @@ namespace ConversorFinalBk.Controllers
         }
 
         [HttpGet]
-
         public ActionResult<Currency> GetAll()
         {
             return Ok(_currencyService.GetAll());
+        }
+
+        [HttpGet]
+        [Route("CurrencyId")]
+        public IActionResult getOneById(int id)
+        {
+            if (!_currencyService.CheckIfCurrencyExists(id))
+            {
+                return NotFound();
+            }
+            else
+                return Ok(_currencyService.GetOneById(id));
         }
     }
 }

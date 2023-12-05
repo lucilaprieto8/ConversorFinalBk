@@ -1,4 +1,5 @@
 ﻿using ConversorFinal_BE.Data;
+using ConversorFinalBk.Data.Interfaces;
 using ConversorFinalBk.Entities;
 using ConversorFinalBk.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -7,50 +8,47 @@ namespace ConversorFinalBk.Services
 {
     public class CurrencyService
     {
-        private readonly ConversorContext _conversorContext;
+        private readonly IRepository<Currency> _currencyRepository;
+        private readonly SessionService _sessionService;
 
-        public CurrencyService(ConversorContext conversorContext)
+        public CurrencyService(IRepository<Currency> Currencyrepository, SessionService sessionService)
         {
-            _conversorContext = conversorContext;
+            _currencyRepository = Currencyrepository;
+            _sessionService = sessionService;
         }
 
-        public void CreateCurrency(CurrencyForCreationDto currencyForCreation)
+        public bool CreateCurrency(Currency CurrencyToCreate)
         {
-            Currency currency = new Currency()
+            return _currencyRepository.Insert(CurrencyToCreate);
+        }
+        
+
+        public bool UpdateCurrency(Currency CurrencyToUpdate, int Id)
+        {
+            if (!CheckIfCurrencyExists(CurrencyToUpdate.Id))
             {
-                Id = 0,
-                Leyend = currencyForCreation.Leyend,
-                Symbol = currencyForCreation.Symbol,
-                IC = currencyForCreation.IC
-            };
-            _conversorContext.Add(currency);
-            _conversorContext.SaveChanges();
+                throw new Exception("No existe la moneda");
+            }
+            return _currencyRepository.Update(CurrencyToUpdate);
         }
-
-        public void UpdateCurrency(CurrencyForCreationDto currencyForCreation, int Id)
-        {
-            var currency = _conversorContext.Currency.FirstOrDefault(c => c.Id == Id);
-            currency.Leyend = currencyForCreation.Leyend;
-            currency.Symbol = currencyForCreation.Symbol;
-            currency.IC = currencyForCreation.IC;
-            _conversorContext.SaveChanges();
-        }
-
         public bool CheckIfCurrencyExists(int Id)
         {
-            var currency = _conversorContext.Currency.FirstOrDefault(c => c.Id == Id);
-            return currency != null;
+            return _currencyRepository.Exist(Id);
         }
 
-        public void DeleteCurrency(int Id)
+        public bool DeleteCurrency(int Id)
         {
-            _conversorContext.Currency.Remove(_conversorContext.Currency.Single(c => c.Id == Id));
-            _conversorContext.SaveChanges();
+            return _currencyRepository.Delete(Id);
         }
 
         public List <Currency> GetAll()
         {
-            return _conversorContext.Currency.ToList();
+            return _currencyRepository.GetAll().ToList();
+        }
+
+        public Currency GetOneById(int Id)
+        {
+            return _currencyRepository.GetById(Id);
         }
     }
 }
