@@ -5,7 +5,7 @@ namespace ConversorFinalBk.Models
     public class CurrencyToConvertDto
     {
         [Required]
-        int amount { get; set; }
+        public int amount { get; set; }
 
         [Required]
         public int CurrencyFromId { get; set; }

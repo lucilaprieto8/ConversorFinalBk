@@ -15,12 +15,5 @@ namespace ConversorFinalBk.Controllers
         {
             _conversionService = conversionService;
         }
-
-        [HttpGet]
-
-        public IActionResult GetConvertionResult(CurrencyToConvertDto currencyToConvertDto)
-        {
-            return Ok(currencyToConvertDto);
-        }
     }
 }

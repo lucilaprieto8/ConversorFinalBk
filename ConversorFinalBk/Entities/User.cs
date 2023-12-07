@@ -18,7 +18,6 @@ namespace ConversorFinalBk.Entities
         public int IdSubscription { get; set; }
 
         public IEnumerable<ConversionHistory> ConversionHistory { get; set; }
-
         public User()
         {
             ConversionHistory = new List<ConversionHistory>();

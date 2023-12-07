@@ -24,7 +24,6 @@ namespace ConversorFinalBk.Controllers
 
 
         [HttpPost]
-
         public IActionResult CreateCurrency([FromBody]CurrencyForCreation currency)
         {
             try
@@ -87,6 +86,13 @@ namespace ConversorFinalBk.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpPost("Convert")]
+        public IActionResult ConvertCurrency(CurrencyToConvertDto currencyToConvert)
+        {
+     
+            return Ok(_currencyService.ConvertCurrency(currencyToConvert));
         }
     }
 }

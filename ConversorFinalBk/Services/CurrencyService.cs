@@ -11,11 +11,13 @@ namespace ConversorFinalBk.Services
     {
         private readonly ConversorContext _conversorContext;
         private readonly SessionService _sessionService;
+        private readonly ConversionService _conversionService;
 
-        public CurrencyService(ConversorContext conversorContext, SessionService sessionService)
+        public CurrencyService(ConversorContext conversorContext, SessionService sessionService, ConversionService conversionService)
         {
             _conversorContext = conversorContext;
             _sessionService = sessionService;
+            _conversionService = conversionService;
         }
        public void CreateCurrency(CurrencyForCreation dto)
         {
@@ -30,8 +32,6 @@ namespace ConversorFinalBk.Services
             _conversorContext.SaveChanges();
         }
           
-
-
        public void UpdateCurrency(CurrencyForCreation dto)
         {
             var currency = _conversorContext.Currency.SingleOrDefault(c => c.Id == dto.Id);
@@ -81,5 +81,28 @@ namespace ConversorFinalBk.Services
                 Leyend = currency.Leyend,
             };
         }
+
+        public double ConvertCurrency (CurrencyToConvertDto dto)
+        {
+            var userId = _sessionService.getOneById();
+
+            Conversion conversion = new Conversion()
+            {
+                Id = 0,
+                Attemps = 0,
+                FirstTry = DateTime.Now,
+                IdUser = userId,
+                
+            };
+            _conversorContext.Add(conversion);
+            _conversorContext.SaveChanges();
+
+            _conversionService.IncrementCounter();
+            var currencyTo = _conversorContext.Currency.FirstOrDefault(c => c.Id == dto.CurrencyToId);
+            var currencyFrom = _conversorContext.Currency.FirstOrDefault(c => c.Id == dto.CurrencyFromId);
+            var result = (dto.amount * currencyFrom.IC) / currencyTo.IC;
+            return result;
+        } 
+
     }
 }
