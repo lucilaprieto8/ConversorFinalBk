@@ -25,14 +25,8 @@ namespace ConversorFinalBk.Controllers
 
         [HttpPost]
 
-        public IActionResult CreateCurrency(CurrencyToCreate currencytocreate)
+        public IActionResult CreateCurrency([FromBody]CurrencyForCreation currency)
         {
-            Currency currency = new Currency()
-            {
-                Leyend = currencytocreate.Leyend,
-                IC = currencytocreate.IC,
-                Symbol = currencytocreate.Symbol
-            };
             try
             {
                 _currencyService.CreateCurrency(currency);
@@ -46,7 +40,7 @@ namespace ConversorFinalBk.Controllers
 
         [HttpPut]
 
-        public IActionResult UpdateCurrency([FromBody]Currency currency)
+        public IActionResult UpdateCurrency([FromBody]CurrencyForCreation currency)
         {
             try
             {
@@ -74,19 +68,19 @@ namespace ConversorFinalBk.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public ActionResult<Currency> GetAll()
         {
             return Ok(_currencyService.GetAll());
         }
 
         [HttpGet]
-        [Route("CurrencyId")]
-        public IActionResult getOneById(int getoneid)
+        [Route("GetOne")]
+        public IActionResult getOneById(int id)
         {
             try
             {
-                Currency currency = _currencyService.GetOneById(getoneid);
+                CurrencyDto currency = _currencyService.GetOneById(id);
                     return Ok(currency);
             }
             catch (Exception ex)
