@@ -19,7 +19,7 @@ namespace ConversorFinalBk.Services
         }
         public void IncrementCounter()
         {
-            var IdUser = _sessionService.getOneById();
+            var IdUser = _sessionService.GetUserId();
             var counter2 = _conversorContext.Conversion.FirstOrDefault(c => c.IdUser == IdUser);
             var user = _conversorContext.User.FirstOrDefault(c => c.Id == IdUser);
             var subs = _conversorContext.Subscription.FirstOrDefault(c => c.Id == user.IdSubscription);
@@ -39,7 +39,7 @@ namespace ConversorFinalBk.Services
         // de las attemps
         public bool UserRequestPerMonth() 
         {
-            var IdUser = _sessionService.getOneById();
+            var IdUser = _sessionService.GetUserId();
             var requestDate = _conversorContext.Conversion.FirstOrDefault(c => c.IdUser == IdUser);
             if ((requestDate.FirstTry - DateTime.Now) > TimeSpan.FromDays(30))
             {
@@ -48,11 +48,7 @@ namespace ConversorFinalBk.Services
                 _conversorContext.Update(requestDate);
                 return true;
             }
-
             return false;
-
-
-
         }
     }
 }

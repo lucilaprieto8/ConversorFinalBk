@@ -84,7 +84,7 @@ namespace ConversorFinalBk.Services
 
         public double ConvertCurrency (CurrencyToConvertDto dto)
         {
-            var userId = _sessionService.getOneById();
+            var userId = _sessionService.GetUserId();
 
             Conversion conversion = new Conversion()
             {

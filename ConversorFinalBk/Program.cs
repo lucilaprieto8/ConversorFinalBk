@@ -46,6 +46,8 @@ namespace ConversorFinalBk
             builder.Services.AddScoped<CurrencyService>();
             builder.Services.AddScoped<SessionService>();
             builder.Services.AddScoped<ConversionService>();
+            builder.Services.AddScoped<SubscriptionService>();
+            builder.Services.AddScoped<HistoryService>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(GeneralRepository<>));
             builder.Services.AddDbContext<ConversorContext>(dbContextOptions => 
             dbContextOptions.UseSqlite(

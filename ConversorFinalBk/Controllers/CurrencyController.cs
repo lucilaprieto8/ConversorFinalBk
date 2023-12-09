@@ -15,11 +15,13 @@ namespace ConversorFinalBk.Controllers
         private readonly CurrencyService _currencyService;
         private readonly IRepository<Currency> _repository;
         private readonly SessionService _sessionService;
-        public CurrencyController(CurrencyService currencyService, IRepository<Currency> repository, SessionService sessionService)
+        private readonly ConversionService _conversionService;
+        public CurrencyController(CurrencyService currencyService, IRepository<Currency> repository, SessionService sessionService, ConversionService conversionService)
         {
             _currencyService = currencyService;
             _repository = repository;
             _sessionService = sessionService;
+            _conversionService = conversionService;
         }
 
 
@@ -91,8 +93,15 @@ namespace ConversorFinalBk.Controllers
         [HttpPost("Convert")]
         public IActionResult ConvertCurrency(CurrencyToConvertDto currencyToConvert)
         {
-            
-            return Ok(_currencyService.ConvertCurrency(currencyToConvert));
+            try
+            {
+                _conversionService.IncrementCounter();
+                return Ok(_currencyService.ConvertCurrency(currencyToConvert));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

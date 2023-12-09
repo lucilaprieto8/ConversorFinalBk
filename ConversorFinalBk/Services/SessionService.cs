@@ -10,7 +10,7 @@ namespace ConversorFinalBk.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public int getOneById()
+        public int GetUserId()
         {
             Claim? userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst("Id");
 
