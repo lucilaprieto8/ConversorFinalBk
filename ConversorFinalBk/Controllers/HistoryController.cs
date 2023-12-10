@@ -1,4 +1,6 @@
-﻿using ConversorFinalBk.Services;
+﻿using ConversorFinalBk.Models;
+using ConversorFinalBk.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,13 +14,22 @@ namespace ConversorFinalBk.Controllers
 
         public HistoryController(HistoryService historyService)
         {
-            _historyService = historyService;        }
+            _historyService = historyService;        
+        }
 
+        [Authorize]
         [HttpGet]
-        public IActionResult GetHistorical(int id)
+        public IActionResult GetHistory()
         {
-            _historyService.GetHistorical(id);
-            return Ok();
+            try
+            {
+                _historyService.GetHistory();
+                return Ok(_historyService.GetHistory());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

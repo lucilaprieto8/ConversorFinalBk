@@ -4,6 +4,7 @@ using ConversorFinalBk.Entities;
 using ConversorFinalBk.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ConversorFinalBk.Services
 {
@@ -12,12 +13,14 @@ namespace ConversorFinalBk.Services
         private readonly ConversorContext _conversorContext;
         private readonly SessionService _sessionService;
         private readonly ConversionService _conversionService;
+        private readonly HistoryService _historyService;
 
-        public CurrencyService(ConversorContext conversorContext, SessionService sessionService, ConversionService conversionService)
+        public CurrencyService(ConversorContext conversorContext, SessionService sessionService, ConversionService conversionService, HistoryService historyService)
         {
             _conversorContext = conversorContext;
             _sessionService = sessionService;
             _conversionService = conversionService;
+            _historyService = historyService;
         }
        public void CreateCurrency(CurrencyForCreation dto)
         {
@@ -85,6 +88,7 @@ namespace ConversorFinalBk.Services
         public double ConvertCurrency (CurrencyToConvertDto dto)
         {
             var userId = _sessionService.GetUserId();
+            var lu = 0;
 
             Conversion conversion = new Conversion()
             {
@@ -94,6 +98,7 @@ namespace ConversorFinalBk.Services
                 IdUser = userId,
                 
             };
+
             _conversorContext.Add(conversion);
             _conversorContext.SaveChanges();
 
@@ -101,8 +106,20 @@ namespace ConversorFinalBk.Services
             var currencyTo = _conversorContext.Currency.FirstOrDefault(c => c.Id == dto.CurrencyToId);
             var currencyFrom = _conversorContext.Currency.FirstOrDefault(c => c.Id == dto.CurrencyFromId);
             var result = (dto.amount * currencyFrom.IC) / currencyTo.IC;
-            return result;
-        } 
 
+            ConversionHistory historical = new()
+            {
+                Id = 0,
+                ConversionDate = conversion.FirstTry,
+                CurrencyFrom = currencyFrom.Leyend,
+                CurrencyTo = currencyTo.Leyend,
+                AmountInput = dto.amount,
+                AmountOutput = result,
+                IdUser = userId,
+            };
+            _conversorContext.Add(historical);
+            _conversorContext.SaveChanges();
+            return result;
+        }
     }
 }
