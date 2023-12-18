@@ -65,15 +65,15 @@ namespace ConversorFinalBk
             builder.Services
             .AddHttpContextAccessor()
             .AddAuthorization()
-            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddAuthentication("Bearer")
             .AddJwtBearer(options =>
             {
             options.TokenValidationParameters = new TokenValidationParameters
             {
             ValidateIssuer = true,
             ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
+                //  JwtBearerDefaults.AuthenticationScheme          ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))

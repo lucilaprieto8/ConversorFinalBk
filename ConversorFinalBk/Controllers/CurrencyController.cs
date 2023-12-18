@@ -43,7 +43,7 @@ namespace ConversorFinalBk.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpPut("{id}")]
 
         public IActionResult UpdateCurrency( CurrencyForCreation currency, int id)

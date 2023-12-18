@@ -51,10 +51,7 @@ namespace ConversorFinalBk.Controllers
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
 
-            return Ok(new
-            {
-                AccessToken = jwt
-            });
+            return Ok(jwt);
         }
     }
 }
