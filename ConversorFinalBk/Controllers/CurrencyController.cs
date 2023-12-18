@@ -2,6 +2,7 @@
 using ConversorFinalBk.Entities;
 using ConversorFinalBk.Models;
 using ConversorFinalBk.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection.Metadata.Ecma335;
@@ -29,7 +30,7 @@ namespace ConversorFinalBk.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateCurrency([FromBody]CurrencyForCreation currency)
+        public IActionResult CreateCurrency([FromBody] CurrencyForCreation currency)
         {
             try
             {
@@ -42,14 +43,15 @@ namespace ConversorFinalBk.Controllers
             }
         }
 
-        [HttpPut]
 
-        public IActionResult UpdateCurrency([FromBody]CurrencyForCreation currency)
+        [HttpPut("{id}")]
+
+        public IActionResult UpdateCurrency( CurrencyForCreation currency, int id)
         {
             try
             {
-                _currencyService.UpdateCurrency(currency);
-                return NoContent();
+                _currencyService.UpdateCurrency(currency, id);
+                return Ok("ando");
             }
             catch (Exception ex)
             {
@@ -57,8 +59,8 @@ namespace ConversorFinalBk.Controllers
             }
         }
 
-        [HttpDelete]
-        public IActionResult DeleteCurrency([FromQuery]int Id)
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCurrency(int Id)
         {
             try
             {
@@ -79,7 +81,7 @@ namespace ConversorFinalBk.Controllers
         }
 
         [HttpGet]
-        [Route("GetOne")]
+        [Route("{id}")]
         public IActionResult getOneById(int id)
         {
             try
@@ -94,7 +96,7 @@ namespace ConversorFinalBk.Controllers
         }
 
         [HttpPost("Convert")]
-        public IActionResult ConvertCurrency(CurrencyToConvertDto currencyToConvert)
+        public IActionResult ConvertCurrency([FromBody]CurrencyToConvertDto currencyToConvert)
         
         {
             try

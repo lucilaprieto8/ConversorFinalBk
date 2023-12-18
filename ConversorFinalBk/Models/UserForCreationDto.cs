@@ -6,7 +6,7 @@
 
         public string Password { get; set; }
 
-        public int IdSubscription { get; set; }
+        public int IdSubscription { get; set; } = 1;
 
     }
 }

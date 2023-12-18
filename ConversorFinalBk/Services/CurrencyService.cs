@@ -35,9 +35,9 @@ namespace ConversorFinalBk.Services
             _conversorContext.SaveChanges();
         }
           
-       public void UpdateCurrency(CurrencyForCreation dto)
+       public void UpdateCurrency(CurrencyForCreation dto, int id)
         {
-            var currency = _conversorContext.Currency.SingleOrDefault(c => c.Id == dto.Id);
+             Currency? currency = _conversorContext.Currency.SingleOrDefault(c => c.Id == id);
  
             if (currency is null) 
             { 
