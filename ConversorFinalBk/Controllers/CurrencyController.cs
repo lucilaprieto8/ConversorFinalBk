@@ -46,7 +46,7 @@ namespace ConversorFinalBk.Controllers
         [Authorize]
         [HttpPut("{id}")]
 
-        public IActionResult UpdateCurrency( CurrencyForCreation currency, int id)
+        public IActionResult UpdateCurrency(CurrencyForCreation currency, int id)
         {
             try
             {
@@ -80,6 +80,16 @@ namespace ConversorFinalBk.Controllers
             return Ok(_currencyService.GetAll());
         }
 
+        [HttpGet("GetAttemps")]
+        public IActionResult GetAttemps()
+        {
+            return Ok(_currencyService.GetAttemps());
+        }
+
+
+
+
+
         [HttpGet]
         [Route("{id}")]
         public IActionResult getOneById(int id)
@@ -101,8 +111,8 @@ namespace ConversorFinalBk.Controllers
         {
             try
             { 
-                _conversionService.IncrementCounter();
-                return Ok(_currencyService.ConvertCurrency(currencyToConvert));
+                var hola = _currencyService.ConvertCurrency(currencyToConvert);
+                return Ok(hola);
             }
             catch (Exception ex)
             {

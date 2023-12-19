@@ -84,11 +84,21 @@ namespace ConversorFinalBk.Services
                 Leyend = currency.Leyend,
             };
         }
+        public int GetAttemps()
+        {
+            var userId = _sessionService.GetUserId();
+            var user = _conversorContext.User.FirstOrDefault(c => c.Id == userId);
+            var subs = _conversorContext.Subscription.FirstOrDefault(c => c.Id == user.IdSubscription);
+            var attempRegister = _conversorContext.Conversion.FirstOrDefault(u=> u.IdUser == userId);
+            var attemps = subs.MaxAttemps - attempRegister.Attemps ;
+            return attemps;
+        }
+
+
 
         public double ConvertCurrency (CurrencyToConvertDto dto)
         {
             var userId = _sessionService.GetUserId();
-            var lu = 0;
 
             Conversion conversion = new Conversion()
             {

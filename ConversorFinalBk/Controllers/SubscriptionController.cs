@@ -3,6 +3,7 @@ using ConversorFinalBk.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Writers;
 
 namespace ConversorFinalBk.Controllers
 {
@@ -18,18 +19,32 @@ namespace ConversorFinalBk.Controllers
         }
 
         [Authorize]
-        [HttpPut]
-        public IActionResult UpdateSubscription([FromBody]SubToUpdateDto dto)
+        [HttpPut("{id}")]
+        public IActionResult UpdateSubscription(int id)
         {
             try
             {
-                _subscriptionService.UpdateSubscription(dto);
+                _subscriptionService.UpdateSubscription(id);
                 return Ok();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet("AllSubs")]
+        public IActionResult GetAllSubscriptions()
+        {
+           
+            return Ok(_subscriptionService.GetAllSubscription());
+        }
+           
+        [HttpGet("getsub")]
+        public IActionResult GetSubscription() 
+        { 
+            return Ok(_subscriptionService.GetSubscription());
+        
         }
     }
 }

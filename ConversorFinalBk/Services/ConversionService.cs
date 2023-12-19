@@ -17,21 +17,22 @@ namespace ConversorFinalBk.Services
         {
             return _conversorContext.Conversion.ToList();
         }
-        public void IncrementCounter()
+        public int IncrementCounter()
         {
             var IdUser = _sessionService.GetUserId();
             var counter2 = _conversorContext.Conversion.FirstOrDefault(c => c.IdUser == IdUser);
             var user = _conversorContext.User.FirstOrDefault(c => c.Id == IdUser);
             var subs = _conversorContext.Subscription.FirstOrDefault(c => c.Id == user.IdSubscription);
             
-            var Restantes = subs.MaxAttemps - counter2.Attemps;
-            if (Restantes >= 0) { 
+            var restantes = subs.MaxAttemps - counter2.Attemps;
+            if (restantes >= 0) { 
             counter2.Attemps++;
             }
             else
                 throw new Exception("Limite de request superado");
                 
             _conversorContext.Update(counter2);  
+            return restantes;
         }        
 
 
