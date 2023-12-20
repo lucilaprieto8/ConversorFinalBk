@@ -1,7 +1,6 @@
 ﻿using ConversorFinal_BE.Data;
 using ConversorFinalBk.Entities;
 using ConversorFinalBk.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ConversorFinalBk.Services
 {
@@ -31,6 +30,5 @@ namespace ConversorFinalBk.Services
         {
              return _conversorContext.User.SingleOrDefault(x => x.UserName == user && x.Password == password);
         }
-
     }
 }

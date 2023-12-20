@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace ConversorFinalBk.Models
+﻿namespace ConversorFinalBk.Models
 {
     public class CurrencyDto
     {

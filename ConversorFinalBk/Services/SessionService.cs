@@ -9,7 +9,6 @@ namespace ConversorFinalBk.Services
         {
             _httpContextAccessor = httpContextAccessor;
         }
-
         public int GetUserId()
         {
             Claim? userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst("Id");
@@ -21,6 +20,5 @@ namespace ConversorFinalBk.Services
             else
                 return int.Parse(userIdClaim.Value);
         }
-
     }
 }

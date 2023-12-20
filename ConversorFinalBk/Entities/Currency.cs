@@ -11,8 +11,10 @@ namespace ConversorFinalBk.Entities
 
         [Required]
         public string Leyend { get; set; }
+
         [Required]
         public string Symbol { get; set; }
+
         [Required]
         public double IC { get; set; }
     }

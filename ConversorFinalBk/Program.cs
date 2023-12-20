@@ -2,7 +2,6 @@ using ConversorFinal_BE.Data;
 using ConversorFinalBk.Data.Interfaces;
 using ConversorFinalBk.Repository;
 using ConversorFinalBk.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -73,7 +72,7 @@ namespace ConversorFinalBk
             ValidateIssuer = true,
             ValidateAudience = true,
                 //  JwtBearerDefaults.AuthenticationScheme          ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
+            ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
@@ -96,7 +95,6 @@ namespace ConversorFinalBk
             app.UseAuthentication();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

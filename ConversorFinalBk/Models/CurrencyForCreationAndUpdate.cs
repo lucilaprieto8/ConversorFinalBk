@@ -1,6 +1,6 @@
 ﻿namespace ConversorFinalBk.Models
 {
-    public class CurrencyForCreation
+    public class CurrencyForCreationAndUpdate
     {
         public string Leyend { get; set; }
         public string Symbol { get; set; }

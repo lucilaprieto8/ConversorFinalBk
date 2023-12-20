@@ -1,7 +1,5 @@
-﻿using ConversorFinalBk.Models;
-using ConversorFinalBk.Services;
+﻿using ConversorFinalBk.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConversorFinalBk.Controllers
@@ -11,7 +9,6 @@ namespace ConversorFinalBk.Controllers
     public class HistoryController : ControllerBase
     {
         private readonly HistoryService _historyService;
-
         public HistoryController(HistoryService historyService)
         {
             _historyService = historyService;        

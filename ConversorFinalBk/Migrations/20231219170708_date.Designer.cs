@@ -3,6 +3,7 @@ using System;
 using ConversorFinal_BE.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConversorFinalBk.Migrations
 {
     [DbContext(typeof(ConversorContext))]
-    partial class ConversorContextModelSnapshot : ModelSnapshot
+    [Migration("20231219170708_date")]
+    partial class date
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
@@ -26,7 +28,7 @@ namespace ConversorFinalBk.Migrations
                     b.Property<int>("Attemps")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("FirstTry")
+                    b.Property<DateTime>("FirstTry")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("IdUser")

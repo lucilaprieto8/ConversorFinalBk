@@ -2,8 +2,6 @@
 using ConversorFinalBk.Entities;
 using ConversorFinalBk.Models;
 using ConversorFinalBk.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConversorFinalBk.Controllers
@@ -13,7 +11,6 @@ namespace ConversorFinalBk.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserService _userService;
-
         public UserController(UserService userService)
         {
             _userService = userService;
@@ -24,7 +21,7 @@ namespace ConversorFinalBk.Controllers
         {
             try 
             { 
-            _userService.CreateUser(userForCreation);
+                _userService.CreateUser(userForCreation);
             }
             catch (Exception ex)
             {

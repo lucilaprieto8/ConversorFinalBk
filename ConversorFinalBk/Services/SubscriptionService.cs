@@ -1,7 +1,5 @@
 ﻿using ConversorFinal_BE.Data;
 using ConversorFinalBk.Entities;
-using ConversorFinalBk.Models;
-using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace ConversorFinalBk.Services
 {
@@ -20,19 +18,20 @@ namespace ConversorFinalBk.Services
             var IdUser = _sessionService.GetUserId();
             var userToUpdate = _conversorContext.User.FirstOrDefault(u => u.Id == IdUser);
             var hola = _conversorContext.Subscription.FirstOrDefault(i => i.Id == id);
+
             if (hola == null)
             {
                 throw new Exception("no existe la sub");
             }
-            userToUpdate.IdSubscription = id;
-            
+
+            userToUpdate.IdSubscription = id; 
             _conversorContext.SaveChanges();
         }
         public List<Subscription> GetSubscription()
         {
             var userId = _sessionService.GetUserId();
-            var use = _conversorContext.User.FirstOrDefault(u=> u.Id == userId);
-            return _conversorContext.Subscription.Where(s => s.Id == use.IdSubscription).ToList();
+            var user = _conversorContext.User.FirstOrDefault(u=> u.Id == userId);
+            return _conversorContext.Subscription.Where(s => s.Id == user.IdSubscription).ToList();
         }
         public List<Subscription> GetAllSubscription()
         {

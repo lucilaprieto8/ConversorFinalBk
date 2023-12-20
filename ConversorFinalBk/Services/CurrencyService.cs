@@ -13,16 +13,13 @@ namespace ConversorFinalBk.Services
         private readonly ConversorContext _conversorContext;
         private readonly SessionService _sessionService;
         private readonly ConversionService _conversionService;
-        private readonly HistoryService _historyService;
-
-        public CurrencyService(ConversorContext conversorContext, SessionService sessionService, ConversionService conversionService, HistoryService historyService)
+        public CurrencyService(ConversorContext conversorContext, SessionService sessionService, ConversionService conversionService)
         {
             _conversorContext = conversorContext;
             _sessionService = sessionService;
             _conversionService = conversionService;
-            _historyService = historyService;
         }
-       public void CreateCurrency(CurrencyForCreation dto)
+       public void CreateCurrency(CurrencyForCreationAndUpdate dto)
         {
             Currency currency = new Currency()
             {
@@ -35,7 +32,7 @@ namespace ConversorFinalBk.Services
             _conversorContext.SaveChanges();
         }
           
-       public void UpdateCurrency(CurrencyForCreation dto, int id)
+       public void UpdateCurrency(CurrencyForCreationAndUpdate dto, int id)
         {
              Currency? currency = _conversorContext.Currency.SingleOrDefault(c => c.Id == id);
  
@@ -89,13 +86,11 @@ namespace ConversorFinalBk.Services
             var userId = _sessionService.GetUserId();
             var user = _conversorContext.User.FirstOrDefault(c => c.Id == userId);
             var subs = _conversorContext.Subscription.FirstOrDefault(c => c.Id == user.IdSubscription);
-            var attempRegister = _conversorContext.Conversion.FirstOrDefault(u=> u.IdUser == userId);
-            var attemps = subs.MaxAttemps - attempRegister.Attemps ;
+            var register = _conversorContext.Conversion.FirstOrDefault(u=> u.IdUser == userId);
+            var attemps = subs.MaxAttemps - register.Attemps ;
+
             return attemps;
         }
-
-
-
         public double ConvertCurrency (CurrencyToConvertDto dto)
         {
             var userId = _sessionService.GetUserId();
@@ -104,15 +99,16 @@ namespace ConversorFinalBk.Services
             {
                 Id = 0,
                 Attemps = 0,
-                FirstTry = DateTime.Now,
-                IdUser = userId,
-                
+                FirstTry = null,
+                IdUser = userId,    
             };
 
             _conversorContext.Add(conversion);
             _conversorContext.SaveChanges();
 
             _conversionService.IncrementCounter();
+
+
             var currencyTo = _conversorContext.Currency.FirstOrDefault(c => c.Id == dto.CurrencyToId);
             var currencyFrom = _conversorContext.Currency.FirstOrDefault(c => c.Id == dto.CurrencyFromId);
             var result = (dto.amount * currencyFrom.IC) / currencyTo.IC;
@@ -120,7 +116,7 @@ namespace ConversorFinalBk.Services
             ConversionHistory historical = new()
             {
                 Id = 0,
-                ConversionDate = conversion.FirstTry,
+                ConversionDate = DateTime.Now,
                 CurrencyFrom = currencyFrom.Leyend,
                 CurrencyTo = currencyTo.Leyend,
                 AmountInput = dto.amount,
@@ -129,6 +125,7 @@ namespace ConversorFinalBk.Services
             };
             _conversorContext.Add(historical);
             _conversorContext.SaveChanges();
+
             return result;
         }
     }

@@ -1,36 +1,25 @@
-﻿using ConversorFinalBk.Data.Interfaces;
-using ConversorFinalBk.Entities;
+﻿using ConversorFinalBk.Entities;
 using ConversorFinalBk.Models;
 using ConversorFinalBk.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
 
 namespace ConversorFinalBk.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CurrencyController : ControllerBase
     {
         private readonly CurrencyService _currencyService;
-        private readonly IRepository<Currency> _repository;
-        private readonly SessionService _sessionService;
-        private readonly ConversionService _conversionService;
-        private readonly HistoryService _historyService;
 
-        public CurrencyController(CurrencyService currencyService, IRepository<Currency> repository, SessionService sessionService, ConversionService conversionService, HistoryService historyService)
+        public CurrencyController(CurrencyService currencyService)
         {
             _currencyService = currencyService;
-            _repository = repository;
-            _sessionService = sessionService;
-            _conversionService = conversionService;
-            _historyService = historyService;
         }
 
-
         [HttpPost]
-        public IActionResult CreateCurrency([FromBody] CurrencyForCreation currency)
+        public IActionResult CreateCurrency([FromBody] CurrencyForCreationAndUpdate currency)
         {
             try
             {
@@ -39,19 +28,17 @@ namespace ConversorFinalBk.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
-        [Authorize]
         [HttpPut("{id}")]
-
-        public IActionResult UpdateCurrency(CurrencyForCreation currency, int id)
+        public IActionResult UpdateCurrency(CurrencyForCreationAndUpdate currency, int id)
         {
             try
             {
                 _currencyService.UpdateCurrency(currency, id);
-                return Ok("ando");
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -67,7 +54,6 @@ namespace ConversorFinalBk.Controllers
                 _currencyService.DeleteCurrency(Id);
                 return NoContent();
             }
-
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
@@ -77,22 +63,32 @@ namespace ConversorFinalBk.Controllers
         [HttpGet("GetAll")]
         public ActionResult<Currency> GetAll()
         {
-            return Ok(_currencyService.GetAll());
+            try
+            {
+                return Ok(_currencyService.GetAll());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("GetAttemps")]
         public IActionResult GetAttemps()
         {
-            return Ok(_currencyService.GetAttemps());
+            try
+            {
+                return Ok(_currencyService.GetAttemps());
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-
-
-
-
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult getOneById(int id)
+        public IActionResult GetOneById(int id)
         {
             try
             {
@@ -107,12 +103,11 @@ namespace ConversorFinalBk.Controllers
 
         [HttpPost("Convert")]
         public IActionResult ConvertCurrency([FromBody]CurrencyToConvertDto currencyToConvert)
-        
         {
             try
             { 
-                var hola = _currencyService.ConvertCurrency(currencyToConvert);
-                return Ok(hola);
+                var conversion = _currencyService.ConvertCurrency(currencyToConvert);
+                return Ok(conversion);
             }
             catch (Exception ex)
             {

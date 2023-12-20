@@ -1,7 +1,6 @@
 ﻿using ConversorFinal_BE.Data;
 using ConversorFinalBk.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ConversorFinalBk.Repository
 {
@@ -13,7 +12,6 @@ namespace ConversorFinalBk.Repository
         public GeneralRepository(ConversorContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-
             _dbSet =  context.Set<TEntity>();
         }
 

@@ -1,6 +1,5 @@
 ﻿using ConversorFinalBk.Models;
 using ConversorFinalBk.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,6 +20,7 @@ namespace ConversorFinalBk.Controllers
             _userService = userService;
             _config = config;
         }
+
         [HttpPost]
         [Route("Authenticate")]
         public ActionResult<string> Auth(AuthDto authDto)
@@ -32,7 +32,6 @@ namespace ConversorFinalBk.Controllers
             {
                 return Forbid(); //si nos devuelve nulo significa que el usuario no existe o la pass está mal
             }
-
             // Generamos un token según los claims
             var claims = new List<Claim>
             {

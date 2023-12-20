@@ -1,6 +1,5 @@
 ﻿using ConversorFinal_BE.Data;
 using ConversorFinalBk.Entities;
-using Microsoft.AspNetCore.Identity;
 
 namespace ConversorFinalBk.Services
 {
@@ -23,14 +22,21 @@ namespace ConversorFinalBk.Services
             var counter2 = _conversorContext.Conversion.FirstOrDefault(c => c.IdUser == IdUser);
             var user = _conversorContext.User.FirstOrDefault(c => c.Id == IdUser);
             var subs = _conversorContext.Subscription.FirstOrDefault(c => c.Id == user.IdSubscription);
-            
             var restantes = subs.MaxAttemps - counter2.Attemps;
-            if (restantes >= 0) { 
-            counter2.Attemps++;
+            if (counter2.FirstTry is null)
+            {
+                counter2.FirstTry = DateTime.Now;
+            }
+            this.UserRequestPerMonth();
+
+            if (restantes >= 0)
+            {
+                counter2.Attemps++;
             }
             else
+            {
                 throw new Exception("Limite de request superado");
-                
+            }
             _conversorContext.Update(counter2);  
             return restantes;
         }        
@@ -42,7 +48,7 @@ namespace ConversorFinalBk.Services
         {
             var IdUser = _sessionService.GetUserId();
             var requestDate = _conversorContext.Conversion.FirstOrDefault(c => c.IdUser == IdUser);
-            if ((requestDate.FirstTry - DateTime.Now) > TimeSpan.FromDays(30))
+            if (( DateTime.Now - requestDate.FirstTry) > TimeSpan.FromDays(30))
             {
                 requestDate.Attemps = 0;
                 requestDate.FirstTry = DateTime.Now;
