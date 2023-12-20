@@ -71,7 +71,7 @@ namespace ConversorFinalBk
             {
             ValidateIssuer = true,
             ValidateAudience = true,
-                //  JwtBearerDefaults.AuthenticationScheme          ValidateLifetime = true,
+            ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],

@@ -45,7 +45,7 @@ namespace ConversorFinalBk.Controllers
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(7),
+                expires: DateTime.Now.AddDays(7),//con fines de testing
                 signingCredentials: credentials);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);

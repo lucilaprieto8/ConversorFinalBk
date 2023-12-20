@@ -17,9 +17,9 @@ namespace ConversorFinalBk.Services
         {
             var IdUser = _sessionService.GetUserId();
             var userToUpdate = _conversorContext.User.FirstOrDefault(u => u.Id == IdUser);
-            var hola = _conversorContext.Subscription.FirstOrDefault(i => i.Id == id);
+            var sub = _conversorContext.Subscription.FirstOrDefault(i => i.Id == id);
 
-            if (hola == null)
+            if (sub == null)
             {
                 throw new Exception("no existe la sub");
             }

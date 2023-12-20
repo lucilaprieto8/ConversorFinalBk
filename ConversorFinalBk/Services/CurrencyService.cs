@@ -1,10 +1,7 @@
 ﻿using ConversorFinal_BE.Data;
-using ConversorFinalBk.Data.Interfaces;
 using ConversorFinalBk.Entities;
 using ConversorFinalBk.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Data;
-using System.Security.Cryptography.X509Certificates;
+
 
 namespace ConversorFinalBk.Services
 {
